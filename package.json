@@ -1,0 +1,44 @@
+{
+  "name": "dsh-markdown-extensions",
+  "version": "0.1.0",
+  "description": "Configurable Markdown extensions for the DeepSeek Harness document preview (.mdc by default).",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "markdown",
+    "mdc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxid/dsh-ext-master.git"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.3"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar-documentpreview"
+      ]
+    }
+  }
+}

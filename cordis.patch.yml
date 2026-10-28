@@ -1,0 +1,6 @@
+- insert:
+    - id: markdown-extensions
+      name: dsh-markdown-extensions
+      config:
+        extensions:
+          - mdc

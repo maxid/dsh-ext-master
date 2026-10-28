@@ -1,0 +1,8 @@
+# 追加到 ~/.dsh/profiles/desktop/cordis.patch.yml
+# 默认已由 bundle patch 配置为 [mdc]；这里演示扩展更多后缀。
+- id: markdown-extensions
+  name: dsh-markdown-extensions
+  config:
+    extensions:
+      - mdc
+      - mdx
