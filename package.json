@@ -1,7 +1,7 @@
 {
-  "name": "dsh-markdown-extensions",
-  "version": "0.1.0",
-  "description": "Configurable Markdown extensions for the DeepSeek Harness document preview (.mdc by default).",
+  "name": "dsh-ext-master",
+  "version": "0.2.0",
+  "description": "Document preview extensions for DeepSeek Harness: configurable Markdown suffixes (.mdc by default) and more preview types over time.",
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
@@ -20,6 +20,7 @@
     "dsh",
     "deepseek-harness",
     "plugin",
+    "document-preview",
     "markdown",
     "mdc"
   ],

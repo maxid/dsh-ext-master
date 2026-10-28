@@ -1,6 +1,7 @@
 - insert:
-    - id: markdown-extensions
-      name: dsh-markdown-extensions
+    - id: dsh-ext-master
+      name: dsh-ext-master
       config:
-        extensions:
-          - mdc
+        previews:
+          markdown:
+            - mdc

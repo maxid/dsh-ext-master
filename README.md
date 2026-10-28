@@ -1,16 +1,16 @@
-# dsh-markdown-extensions
+# dsh-ext-master
 
-给 DeepSeek Harness 的右侧文档预览增加**可配置的 Markdown 扩展名**。默认把 `.mdc` 当作 Markdown；也支持 `mdx`、`mdoc` 等任意后缀。
+DeepSeek Harness 的**文档预览扩展名管理**插件。当前支持 Markdown 后缀（默认把 `.mdc` 当作 Markdown），配置结构按预览类型分组，后续可继续加 `html`、`code` 等预览类型。
 
 适配 DSH `0.2.1-rc.3`。不修改 `app.asar`，通过 DSH profile 的 bundle + client plugin 机制加载。
 
 ## 功能
 
-- 内置预览只注册了 `md` / `markdown`，本插件在运行时把配置的后缀追加到同一个 Markdown 预览定义上。
-- 默认 `["mdc"]`；未配置或配置为空时使用默认值。
+- 内置预览只注册了 `md` / `markdown`；本插件在运行时把配置的后缀追加到对应预览定义。
+- 默认 `previews.markdown: [mdc]`；也支持 `mdx` 等任意安全后缀。
 - 后缀统一小写、去掉前导 `.`、去重，并校验为安全字符。
-- 监听预览注册变化；即使 Markdown 定义晚于本插件注册也能补上。
-- 配置通过 Host 注入页面的 `__DSH_MARKDOWN_EXTENSIONS__` 传递。
+- 监听预览注册变化；即使目标预览定义晚于本插件注册也能补上。
+- 配置通过 Host 注入页面的 `__DSH_DOCUMENT_PREVIEW_EXTENSIONS__` 传递。
 
 ## 安装
 
@@ -19,7 +19,7 @@
 ```bash
 mkdir -p ~/.dsh/profiles/desktop/plugins
 git clone https://github.com/maxid/dsh-ext-master.git \
-  ~/.dsh/profiles/desktop/plugins/dsh-markdown-extensions
+  ~/.dsh/profiles/desktop/plugins/dsh-ext-master
 ```
 
 2. 在 `~/.dsh/profiles/desktop/package.json` 声明依赖并选择 bundle：
@@ -27,42 +27,59 @@ git clone https://github.com/maxid/dsh-ext-master.git \
 ```json
 {
   "dependencies": {
-    "dsh-markdown-extensions": "link:./plugins/dsh-markdown-extensions"
+    "dsh-ext-master": "link:./plugins/dsh-ext-master"
   },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
-        "dsh-markdown-extensions"
+        "dsh-ext-master"
       ]
     }
   }
 }
 ```
 
-保留你原有的 bundles，只在末尾追加 `dsh-markdown-extensions`。
+保留你原有的 bundles，只在末尾追加 `dsh-ext-master`。
 
 3. 建立 `node_modules` 链接（不经过 registry）：
 
 ```bash
-ln -sfn ~/.dsh/profiles/desktop/plugins/dsh-markdown-extensions \
-  ~/.dsh/profiles/desktop/node_modules/dsh-markdown-extensions
+ln -sfn ~/.dsh/profiles/desktop/plugins/dsh-ext-master \
+  ~/.dsh/profiles/desktop/node_modules/dsh-ext-master
 ```
 
 4. 刷新 DSH 页面。若 profile 的 HMR 未开启，重启 DSH。
 
 ## 配置
 
-bundle 自带默认配置（`mdc`）。要扩展更多后缀，在 `~/.dsh/profiles/desktop/cordis.patch.yml` 追加：
+bundle 自带默认配置：
 
 ```yaml
-- id: markdown-extensions
-  name: dsh-markdown-extensions
+previews:
+  markdown:
+    - mdc
+```
+
+要扩展更多后缀，在 `~/.dsh/profiles/desktop/cordis.patch.yml` 追加：
+
+```yaml
+- id: dsh-ext-master
+  name: dsh-ext-master
   config:
-    extensions:
-      - mdc
-      - mdx
+    previews:
+      markdown:
+        - mdc
+        - mdx
+```
+
+`previews` 的 key 对应预览定义 id 的最后一段（如 `markdown`、`html`）。后续新增预览类型时沿用同一结构：
+
+```yaml
+previews:
+  markdown: [mdc, mdx]
+  html: [xhtml]
 ```
 
 改配置后刷新页面（扩展名在页面加载时注入）；仅改本插件 `lib/client.js` 时代码本身可被 DSH HMR 热重载。
@@ -71,8 +88,8 @@ bundle 自带默认配置（`mdc`）。要扩展更多后缀，在 `~/.dsh/profi
 
 ```text
 lib/index.js        Host 插件：校验配置并通过 webserver/index-inject 注入页面
-lib/client.js       Client 插件：把配置后缀追加到内置 Markdown 预览定义
-cordis.patch.yml    Bundle patch：插入 markdown-extensions 行，默认 [mdc]
+lib/client.js       Client 插件：按预览类型把后缀追加到对应预览定义
+cordis.patch.yml    Bundle patch：插入 dsh-ext-master 行，默认 markdown: [mdc]
 ```
 
 ### 说明
