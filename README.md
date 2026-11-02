@@ -2,7 +2,26 @@
 
 DeepSeek Harness 的**文档预览扩展名管理**插件。当前支持 Markdown 后缀（默认把 `.mdc` 当作 Markdown），配置结构按预览类型分组，后续可继续加 `html`、`code` 等预览类型。
 
-适配 DSH `0.2.1-rc.3`。不修改 `app.asar`，通过 DSH profile 的 bundle + client plugin 机制加载。
+适配 DSH `>=0.2.1-rc.3 <0.3.0-0`（已在 `0.2.1-rc.5` 与当前桌面版 `0.2.1-rc.3` 上验证）。不修改 `app.asar`，通过 DSH profile 的 bundle + client plugin 机制加载。
+
+## 版本对应（tag）
+
+本仓库的 tag 与 [DeepSeek Harness 官方版本](https://github.com/deepseek-ai/deepseek-harness/releases)一一对应，命名沿用官方的 `dsh-v<版本>`：
+
+| DSH 版本 | 对应插件 tag | 验证情况 |
+|---|---|---|
+| `0.2.1-rc.5`（当前最新） | `dsh-v0.2.1-rc.5` | ✅ 2026-11-02 在独立 profile 中真实启动 Web 验证：Host 注入 + Client bundle 均正常 |
+| `0.2.1-rc.3`（当前桌面版） | `dsh-v0.2.1-rc.3` | ✅ 桌面版日常使用验证 |
+
+`package.json` 的 `engines.dsh` 声明 `>=0.2.1-rc.3 <0.3.0-0`（`-0` 让 0.3 的预发布版本也算在边界外）：这个范围内的 DSH 版本不需要换 tag；DSH 进入 `0.3`（含 alpha/rc）时，本插件会先发布对应版本的 tag。
+
+按 DSH 版本安装（把 profile 名换成你的实际环境）：
+
+```bash
+dsh plugin --profile desktop add "github:maxid/dsh-ext-master#dsh-v0.2.1-rc.5"
+```
+
+详细变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 功能
 
@@ -13,6 +32,8 @@ DeepSeek Harness 的**文档预览扩展名管理**插件。当前支持 Markdow
 - 配置通过 Host 注入页面的 `__DSH_DOCUMENT_PREVIEW_EXTENSIONS__` 传递。
 
 ## 安装
+
+推荐用 DSH 的插件命令安装对应版本（见上方「版本对应」）；下面是手动方式。
 
 1. 把仓库放到 profile 的插件目录：
 

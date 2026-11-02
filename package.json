@@ -1,6 +1,6 @@
 {
   "name": "dsh-ext-master",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Document preview extensions for DeepSeek Harness: configurable Markdown suffixes (.mdc by default) and more preview types over time.",
   "license": "MIT",
   "type": "module",
@@ -14,6 +14,7 @@
     "lib",
     "cordis.patch.yml",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "keywords": [
@@ -29,7 +30,7 @@
     "url": "git+https://github.com/maxid/dsh-ext-master.git"
   },
   "engines": {
-    "dsh": ">=0.2.1-rc.3"
+    "dsh": ">=0.2.1-rc.3 <0.3.0-0"
   },
   "dsh": {
     "bundle": {
